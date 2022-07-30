@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Slider } from "antd";
 import { Col, Row } from "react-bootstrap";
+import { InputNumber } from "antd";
 
 export function Answer() {
   const [currentInputValue, setCurrentInputValue] = useState([0, 100]);
@@ -44,32 +45,45 @@ export function Answer() {
     ));
 
   const handleNextMovement = () => {
-    setSliders([
+    const currentSlidersDisabled = [
       ...sliders.map((slider) =>
         slider.id === currentSliderId
           ? { ...slider, enable: false, currentValue: currentInputValue }
           : slider
       ),
-      {
-        id: currentSliderId + 1,
-        enable: true,
-        currentValue: [0, 100],
-      },
-    ]);
+    ];
 
-    setCurrentSliderId(currentSliderId + 1);
+    if (currentSliderId >= 5) {
+      setSliders(currentSlidersDisabled);
+    } else {
+      setSliders([
+        ...currentSlidersDisabled,
+        {
+          id: currentSliderId + 1,
+          enable: true,
+          currentValue: [0, 100],
+        },
+      ]);
+
+      setCurrentSliderId(currentSliderId + 1);
+    }
   };
 
   return (
     <>
       <RenderedSliders />
+      <Row>
+        <Col>
+          <InputNumber data-testid="guess-input" min={0} max={100} />
+        </Col>
+      </Row>
 
       <Row>
         <Button
           data-testid="buttonNext"
           type="primary"
           onClick={() => {
-            if (currentSliderId < 5) handleNextMovement();
+            handleNextMovement();
           }}
         >
           Next >>
