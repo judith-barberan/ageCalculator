@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Button, Slider } from "antd";
+import { Button, Slider, Space } from "antd";
 import { Col, Row } from "react-bootstrap";
 import { InputNumber } from "antd";
 
-export function Answer() {
+export function Answer( { person } ) {
   const [currentInputValue, setCurrentInputValue] = useState([0, 100]);
 
   const [sliders, setSliders] = useState([
@@ -13,7 +13,6 @@ export function Answer() {
   const [currentSliderId, setCurrentSliderId] = useState(1);
 
   const onChange = (newValue) => {
-    console.log(newValue);
     setCurrentInputValue(newValue);
     setSliders([
       ...sliders.map((slider) =>
@@ -25,11 +24,8 @@ export function Answer() {
   };
 
   const RenderedSliders = () =>
-    sliders.map(({ id, enable, currentValue }) => (
+    sliders.map(({ id, enable, currentValue, result }) => (
       <Row data-testid={"slider-" + id}>
-        <Col md={2}>
-          <h6>{currentValue[0]}</h6>
-        </Col>
         <Col md={8}>
           <Slider
             range
@@ -38,17 +34,30 @@ export function Answer() {
             onChange={onChange}
           />
         </Col>
-        <Col md={2}>
-          <h6>{currentValue[1]}</h6>
+        <Col md={3}>
+          <Space>
+            <h6>{currentValue[0]}</h6>
+            <h6>-</h6>
+            <h6>{currentValue[1]}</h6>
+          </Space>
         </Col>
+        <Col md={1}>{result}</Col>
       </Row>
     ));
 
   const handleNextMovement = () => {
+
+    console.log()
+
     const currentSlidersDisabled = [
       ...sliders.map((slider) =>
         slider.id === currentSliderId
-          ? { ...slider, enable: false, currentValue: currentInputValue }
+          ? {
+              ...slider,
+              enable: false,
+              currentValue: currentInputValue,
+              result: currentInputValue[0] >= person.age && currentInputValue[1] <= person.age ? "🟡" : "🔴",
+            }
           : slider
       ),
     ];
