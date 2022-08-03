@@ -6,16 +6,22 @@ import { useEffect, useState } from "react";
 import { find } from "./repository/AnswerRepository";
 
 function App() {
-  const [person, setPerson] = useState({ name: "", image: "", age: "" });
+  const [person, setPerson] = useState({
+    image:
+      "",
+    name: "",
+    age: "",
+  });
 
   const myFunction = async () => {
     const result = await find();
+    console.log(result);
     setPerson(result);
   };
 
   useEffect(() => {
     myFunction();
-  }, [person]);
+  }, []);
 
   return (
     <div className="App">
@@ -27,7 +33,7 @@ function App() {
           <img data-testid="personImage" src={person.image} alt="Foto" />
         </Row>
 
-        <Answer person />
+        <Answer {...person} />
       </Container>
     </div>
   );

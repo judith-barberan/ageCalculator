@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Slider, Space } from "antd";
 import { Col, Row } from "react-bootstrap";
 import { InputNumber } from "antd";
 
-export function Answer( { person } ) {
+export function Answer(  person  ) {
   const [currentInputValue, setCurrentInputValue] = useState([0, 100]);
 
   const [sliders, setSliders] = useState([
@@ -46,8 +46,8 @@ export function Answer( { person } ) {
     ));
 
   const handleNextMovement = () => {
-
-    console.log()
+    console.log("CV", currentInputValue)
+    console.log("PERSON", person)
 
     const currentSlidersDisabled = [
       ...sliders.map((slider) =>
@@ -56,7 +56,7 @@ export function Answer( { person } ) {
               ...slider,
               enable: false,
               currentValue: currentInputValue,
-              result: currentInputValue[0] >= person.age && currentInputValue[1] <= person.age ? "🟡" : "🔴",
+              result: currentInputValue[0] <= person.age && currentInputValue[1] >= person.age ? "🟡" : "🔴",
             }
           : slider
       ),

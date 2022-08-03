@@ -1,5 +1,4 @@
 describe("When the user start to play the game", () => {
- 
   it("should see an image", () => {
     cy.visit("http://localhost:3000");
 
@@ -25,13 +24,14 @@ describe("When the user start to play the game", () => {
   });
 
   it("The user can modify the slider value", () => {
+    mockAnswer();
     cy.visit("http://localhost:3000");
-
     modifySliderValue(".ant-slider-handle-2", "{leftarrow}", 5);
     modifySliderValue(".ant-slider-handle-1", "{rightarrow}", 5);
   });
 
   it("The user can see the sliders ", () => {
+    mockAnswer();
     cy.visit("http://localhost:3000");
 
     modifySliderValue(".ant-slider-handle-2", "{leftarrow}", 5);
@@ -41,6 +41,7 @@ describe("When the user start to play the game", () => {
   });
 
   it("When user clicks on the next button, the current slider is disabled", () => {
+    mockAnswer();
     cy.visit("http://localhost:3000");
 
     cy.findByTestId("buttonNext").click();
@@ -48,6 +49,7 @@ describe("When the user start to play the game", () => {
   });
 
   it("When user clicks on the next button, a new slider appears", () => {
+    mockAnswer();
     cy.visit("http://localhost:3000");
 
     cy.findByTestId("slider-1").should("exist");
@@ -59,6 +61,7 @@ describe("When the user start to play the game", () => {
   });
 
   it("When user clicks more than 5 times the next button, a new slider doesn't appears", () => {
+    mockAnswer();
     cy.visit("http://localhost:3000");
 
     cy.findByTestId("buttonNext").click();
@@ -68,24 +71,26 @@ describe("When the user start to play the game", () => {
   });
 
   it("The user should see an input to guess the age", () => {
+    mockAnswer();
     cy.visit("http://localhost:3000");
 
     cy.findByTestId("guess-input").should("exist");
   });
 
   it("the slider should turn yellow if the age is between the solution", () => {
-    mockAnswer()
-    cy.visit("http://localhost:3000");
+    mockAnswer();
 
+    cy.visit("http://localhost:3000");
+    // cy.wait(2000);
     cy.findByText("🟡").should("not.exist");
     cy.findByTestId("buttonNext").click();
     cy.findByText("🟡").should("exist");
   });
 
   it("the slider should turn red if the age is not between the solution", () => {
-    mockAnswer()
+    mockAnswer();
+
     cy.visit("http://localhost:3000");
-    
 
     cy.findByText("🔴").should("not.exist");
     modifySliderValue(".ant-slider-handle-1", "{rightarrow}", 1);
@@ -115,6 +120,6 @@ function clickNextButton(times) {
 
 function modifySliderValue(slider, movement, times) {
   for (let i = 0; i < times; i++) {
-    cy.get(slider).type(movement);
+    cy.get(".ant-slider").find(slider).type(movement);
   }
 }
