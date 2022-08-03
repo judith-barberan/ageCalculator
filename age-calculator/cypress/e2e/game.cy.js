@@ -79,9 +79,8 @@ describe("When the user start to play the game", () => {
 
   it("the slider should turn yellow if the age is between the solution", () => {
     mockAnswer();
-
     cy.visit("http://localhost:3000");
-    // cy.wait(2000);
+
     cy.findByText("🟡").should("not.exist");
     cy.findByTestId("buttonNext").click();
     cy.findByText("🟡").should("exist");
@@ -89,7 +88,6 @@ describe("When the user start to play the game", () => {
 
   it("the slider should turn red if the age is not between the solution", () => {
     mockAnswer();
-
     cy.visit("http://localhost:3000");
 
     cy.findByText("🔴").should("not.exist");
@@ -120,6 +118,7 @@ function clickNextButton(times) {
 
 function modifySliderValue(slider, movement, times) {
   for (let i = 0; i < times; i++) {
-    cy.get(".ant-slider").find(slider).type(movement);
+    cy.get(slider).click({ force: true });
+    cy.get(slider).type(movement);
   }
 }
